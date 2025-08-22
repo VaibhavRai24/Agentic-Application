@@ -2,10 +2,30 @@ import streamlit as st
 import sseclient
 import urllib.parse
 import json
+import uuid
 
 st.set_page_config(page_title="AI Chat with LangGraph", page_icon="🤮", layout="centered")
 st.title("Agent is here 🤮")
+st.sidebar.title("Agentiii")
+st.sidebar.header("My Conversations")
 
+def generate_thread_id():
+    thread_id = str(uuid.uuid4())
+    return thread_id
+
+def reset_thread():
+    thread_id = generate_thread_id()
+    st.session_state["checkpoint_id"] = thread_id
+    add_thread(st.session_state["checkpoint_id"])
+    st.session_state["messages"] = []
+    
+if st.sidebar.button("New chat"):
+    reset_thread()
+    
+def add_thread(thread_id):
+    if thread_id not in st.session_state["chat_threads"]:
+        st.session_state["chat_threads"].append(thread_id)
+        
 # Backend URL
 BACKEND_URL = "http://127.0.0.1:8000/chat_stream/"
 
@@ -14,7 +34,14 @@ if "messages" not in st.session_state:
     st.session_state["messages"] = []
 if "checkpoint_id" not in st.session_state:
     st.session_state["checkpoint_id"] = None
+    
+if "chat_threads" not in st.session_state:
+    st.session_state["chat_threads"] = []
 
+add_thread(st.session_state["checkpoint_id"])
+
+for thread_id in st.session_state["chat_threads"]:
+    st.sidebar.text(thread_id)
 
 for message in st.session_state["messages"]:
     role = message["role"]

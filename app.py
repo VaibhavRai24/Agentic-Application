@@ -138,10 +138,7 @@ async def generate_chat_responses(message: str, checkpoint_id: Optional[str] = N
             output = event["data"]["output"]
 
             
-            if not (hasattr(output, "tool_calls") and output.tool_calls):
-                payload = {"type": "content", "content": output.content}
-                yield f"data: {json.dumps(payload)}\n\n"
-            else:
+            if hasattr(output, "tool_calls") and output.tool_calls:
                 search_calls = [call for call in output.tool_calls if call["name"] == "tavily_search_results_json"]
                 if search_calls:
                     search_query = search_calls[0]["args"].get("query", "")
