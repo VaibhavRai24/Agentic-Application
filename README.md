@@ -1,4 +1,4 @@
-Here’s a **README.md** you can use for your project based on the two files (`app.py` and `client.py`):
+
 
 ---
 
@@ -115,7 +115,5 @@ TAVILY_API_KEY=your_tavily_api_key
 * Improve UI/UX with message formatting and memory visualization.
 * Deploy backend (FastAPI) and frontend (Streamlit) to cloud platforms.
 
----
 
-Do you want me to also generate a **requirements.txt** file automatically from your code so you don’t miss any dependencies?
 
